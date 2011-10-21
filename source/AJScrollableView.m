@@ -145,7 +145,7 @@
     int index = self.currentIndex;
     [self addViewAtIndex:index];
     // Make sure that the next image is loaded
-    if (self.numberOfViews >= index+1) {
+    if (self.numberOfViews > index+1) {
         [self addViewAtIndex:index+1];
     }
     // Make sure that the previous view is loaded, if we're not at page 0 that is.
