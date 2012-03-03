@@ -296,9 +296,13 @@
     
     // Loop through views
     for (UIView *view in [self.scrollView subviews]) {
+        // See if the view is reloadable
+        if ([view respondsToSelector:@selector(reloadData)]) {
+            [view performSelector:@selector(reloadData)];
+            continue;
+        }
         
-        // Ask delegate if they should be removed, if so add new views instead
-        
+        // Otherwise, ask the delegate if we can remove the view
         if ([self.delegate respondsToSelector:@selector(scrollableView:shouldRemoveView:atIndex:)]) {
             if ([self.delegate scrollableView:self shouldRemoveView:view atIndex:view.tag-AJScrollableViewControllerViewTagOffset]) {
                 
