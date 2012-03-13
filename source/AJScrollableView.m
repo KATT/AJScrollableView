@@ -54,12 +54,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    self.scrollView=nil;
-    [super dealloc];
-}
-
 #pragma mark - Custom getters
 -(int)currentIndex {
     
@@ -248,8 +242,6 @@
         
 	    imageView.tag = AJScrollableViewControllerFakeViewsTag;
     	[self.scrollView insertSubview:imageView atIndex:0];
-        
-        [imageView release];
         
     }
 }
