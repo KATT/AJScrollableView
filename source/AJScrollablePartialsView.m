@@ -59,7 +59,7 @@
     int index = self.currentIndex;
     
     // How many is visible at the same time?
-    int visible = ceil(self.scrollView.frame.size.width / [self.delegate scrollableViewItemWidth:self]);
+    int visible = ceil(self.scrollView.frame.size.width / [self.delegate scrollableViewItemWidth:self]) +1;
     
     // Remove all non visible views in order to preserve memory
     
@@ -82,7 +82,7 @@
     int index = self.currentIndex;
     
     // How many is visible at the same time?
-    int visible = ceil(self.scrollView.frame.size.width / [self.delegate scrollableViewItemWidth:self]);
+    int visible = ceil(self.scrollView.frame.size.width / [self.delegate scrollableViewItemWidth:self])+1;
     
     [self addViewAtIndex:index];
     
