@@ -45,11 +45,6 @@
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [self bufferAndPurgeViews];
     [self scrollToViewIndex:self.currentIndex];
-    
-    if ([self.delegate respondsToSelector:@selector(scrollableView:didScrolltoIndex:)]) {
-        [self.delegate scrollableView:self didScrolltoIndex:self.currentIndex];
-    }
-    
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate; {
