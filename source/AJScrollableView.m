@@ -8,31 +8,10 @@
 
 #import <QuartzCore/CoreAnimation.h>
 #import "AJScrollableView.h"
-@interface AJScrollableView(Protected)
-
--(void)resizeScrollView;
-
--(CGPoint) centerPointForIndex:(int)index;
-
--(void)addViewAtIndex:(int)index;
-- (UIView*) viewAtIndex: (int) index;
-
-
--(void)purgeFakeViews;
--(void) purgeViews;
--(void) purgeViewAtIndex:(int)index;
-
--(void) bufferAndPurgeViews;
-
--(void)addFakeViewsBetweenIndex:(int)fromIndex and:(int)toIndex;
-
-@end
-
+#import "AJScrollableView+Protected.h"
 @implementation AJScrollableView
 
 
-#define AJScrollableViewControllerViewTagOffset 2000
-#define AJScrollableViewControllerFakeViewsTag 1000
 
 @synthesize 
     scrollView=_scrollView,

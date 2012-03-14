@@ -28,3 +28,5 @@
 -(void)addFakeViewsBetweenIndex:(int)fromIndex and:(int)toIndex;
 
 @end
+#define AJScrollableViewControllerViewTagOffset 2000
+#define AJScrollableViewControllerFakeViewsTag 1000
