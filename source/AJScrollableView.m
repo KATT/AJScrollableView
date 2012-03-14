@@ -143,6 +143,9 @@
 
 
 -(void)addViewAtIndex:(int)index {
+    if (index < 0 || index >= self.numberOfViews) {
+        return;
+    }
     
     // See if event isn't already added
     

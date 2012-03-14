@@ -11,11 +11,13 @@
 @class AJScrollablePartialsView;
 @protocol AJScrollablePartialsViewDelegate
 
--(NSInteger)scrollableViewItemSpacing:(AJScrollablePartialsView *)scrollableView;
 -(NSInteger)scrollableViewItemWidth:(AJScrollablePartialsView *)scrollableView;
 
 @end
 
-@interface AJScrollablePartialsView : AJScrollableView
+@interface AJScrollablePartialsView : AJScrollableView {
+    int _visible;
+    CGFloat _itemWidth;
+}
 @property (nonatomic, assign) NSObject<AJScrollableViewDelegate,AJScrollablePartialsViewDelegate> *delegate;
 @end

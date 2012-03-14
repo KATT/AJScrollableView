@@ -14,14 +14,33 @@
 @synthesize 
 	delegate=_delegate
 ;
+-(void)reloadData {
+    _itemWidth = [self.delegate scrollableViewItemWidth:self];
+    _visible = ceil(self.scrollView.frame.size.width / _itemWidth);
+    [super reloadData];
+}
 
 -(int)currentIndex {    
-    int index = round(self.scrollView.contentOffset.x / [self.delegate scrollableViewItemWidth:self]);
+    int index = round(self.scrollView.contentOffset.x / _itemWidth);
     if (index < 0) {
         index=0;
     }
     return index;
 }
+
+
+- (void) resizeScrollView {
+    CGFloat width = self.numberOfViews * _itemWidth;
+    if (self.numberOfViews % _visible != 0) {
+        width += _itemWidth;
+    }
+    CGFloat height = self.scrollView.frame.size.height;
+    CGSize scrollViewSize = CGSizeMake(width, height);
+    
+    [self.scrollView setContentSize:scrollViewSize];
+    
+}
+
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [self bufferAndPurgeViews];
@@ -58,9 +77,6 @@
     
     int index = self.currentIndex;
     
-    // How many is visible at the same time?
-    int visible = ceil(self.scrollView.frame.size.width / [self.delegate scrollableViewItemWidth:self]) +1;
-    
     // Remove all non visible views in order to preserve memory
     
     // All before
@@ -69,7 +85,7 @@
     }
     
     // Buffer after
-    for (int i = (index+visible); i < self.numberOfViews; i++) {
+    for (int i = (index+_visible+1); i < self.numberOfViews; i++) {
         [self purgeViewAtIndex:i];
     }
     
@@ -81,8 +97,6 @@
     
     int index = self.currentIndex;
     
-    // How many is visible at the same time?
-    int visible = ceil(self.scrollView.frame.size.width / [self.delegate scrollableViewItemWidth:self])+1;
     
     [self addViewAtIndex:index];
     
@@ -92,7 +106,7 @@
     }
     
     // Buffer after
-    for (int i=index;i<(index+visible);i++) {
+    for (int i=index;i<(index+_visible+1);i++) {
         if (self.numberOfViews > i) {
             [self addViewAtIndex:i];
         }
@@ -102,16 +116,6 @@
     
 }
 
-
-
-- (void) resizeScrollView {
-    CGFloat width = self.numberOfViews * [self.delegate scrollableViewItemWidth:self];
-    CGFloat height = self.scrollView.frame.size.height;
-    CGSize scrollViewSize = CGSizeMake(width, height);
-    
-    [self.scrollView setContentSize:scrollViewSize];
-    
-}
 
 
 -(void)scrollToViewIndex:(int)index animated:(BOOL)animated {
