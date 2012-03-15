@@ -80,6 +80,10 @@
     
     CGFloat xOffset = (CGFloat)index*[self.delegate scrollableViewItemWidth: self];
     CGPoint offset = CGPointMake(xOffset, 0);
+    if (CGPointEqualToPoint(offset, self.scrollView.contentOffset)) {
+        [self.delegate scrollableView:self didScrolltoIndex:index];
+        return;
+    }
     
     [self.scrollView setContentOffset:offset animated:animated];
 }
