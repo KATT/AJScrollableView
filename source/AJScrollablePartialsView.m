@@ -14,10 +14,29 @@
 @synthesize 
 	delegate=_delegate
 ;
+-(void) purgeViews {
+    // Purge only views that have tag > numberOfViews
+    for (UIView *view in self.scrollView.subviews) {
+        if (view.tag-AJScrollableViewControllerViewTagOffset > self.numberOfViews) {
+            [view removeFromSuperview];
+        }
+    }
+}
+-(void) bufferAndPurgeViews {
+    [self purgeViews];
+    // Add everything
+    for (int i=0;i<self.numberOfViews;i++) {
+        [self addViewAtIndex:i];
+    }
+}
 -(void)reloadData {
+    self.numberOfViews = [self.delegate scrollableViewCount:self];
     _itemWidth = [self.delegate scrollableViewItemWidth:self];
     _visible = ceil(self.scrollView.frame.size.width / _itemWidth);
-    [super reloadData];
+    
+    [self resizeScrollView];
+    
+    [self bufferAndPurgeViews];
 }
 
 -(int)currentIndex {    
@@ -42,23 +61,9 @@
 }
 
 
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    [self bufferAndPurgeViews];
-    [self scrollToViewIndex:self.currentIndex];
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate; {
-    if (!decelerate) {
-        [self scrollToViewIndex: self.currentIndex];
-    }
-}
--(void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    [self bufferAndPurgeViews];
-}
-
 
 -(CGPoint) centerPointForIndex:(int)index {
-    CGFloat width = [self.delegate scrollableViewItemWidth:self];
+    CGFloat width = _itemWidth;
     
     CGFloat x = width/2 + width * (float)index;
     CGFloat y = self.scrollView.contentSize.height/2;
@@ -66,52 +71,6 @@
     return CGPointMake(x,y);
     
 }
-
-
--(void) purgeViews {
-    
-    int index = self.currentIndex;
-    
-    // Remove all non visible views in order to preserve memory
-    
-    // All before
-    for (int i = 0; i < index - 1; i++) {
-        [self purgeViewAtIndex:i];
-    }
-    
-    // Buffer after
-    for (int i = (index+_visible+1); i < self.numberOfViews; i++) {
-        [self purgeViewAtIndex:i];
-    }
-    
-    [self purgeFakeViews];
-}
-
-
--(void) bufferAndPurgeViews {
-    
-    int index = self.currentIndex;
-    
-    
-    [self addViewAtIndex:index];
-    
-    // Make sure that the previous view is loaded, if we're not at page 0 that is.
-    if (index) {
-        [self addViewAtIndex:index-1];
-    }
-    
-    // Buffer after
-    for (int i=index;i<(index+_visible+1);i++) {
-        if (self.numberOfViews > i) {
-            [self addViewAtIndex:i];
-        }
-    }
-    
-    [self purgeViews];
-    
-}
-
-
 
 -(void)scrollToViewIndex:(int)index animated:(BOOL)animated {
     [self addViewAtIndex:index];
@@ -123,5 +82,18 @@
     CGPoint offset = CGPointMake(xOffset, 0);
     
     [self.scrollView setContentOffset:offset animated:animated];
+}
+
+#pragma mark - scroll view delegate
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self scrollToViewIndex:self.currentIndex];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate; {
+    if (!decelerate) {
+        [self scrollToViewIndex: self.currentIndex];
+    }
+}
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
 }
 @end
