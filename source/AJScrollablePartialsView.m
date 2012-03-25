@@ -39,6 +39,9 @@
     [self bufferAndPurgeViews];
 }
 
+-(CGFloat) numVisible {
+    return _visible;
+}
 -(int)currentIndex {    
     int index = round(self.scrollView.contentOffset.x / _itemWidth);
     if (index < 0) {

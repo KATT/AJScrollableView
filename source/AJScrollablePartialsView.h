@@ -20,4 +20,5 @@
     CGFloat _itemWidth;
 }
 @property (nonatomic, assign) NSObject<AJScrollableViewDelegate,AJScrollablePartialsViewDelegate> *delegate;
+@property (nonatomic, readonly) CGFloat numVisible;
 @end
