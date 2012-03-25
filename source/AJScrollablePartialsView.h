@@ -16,7 +16,7 @@
 @end
 
 @interface AJScrollablePartialsView : AJScrollableView {
-    int _visible;
+    CGFloat _visible;
     CGFloat _itemWidth;
 }
 @property (nonatomic, assign) NSObject<AJScrollableViewDelegate,AJScrollablePartialsViewDelegate> *delegate;

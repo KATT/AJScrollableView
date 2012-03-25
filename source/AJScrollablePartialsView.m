@@ -32,7 +32,7 @@
 -(void)reloadData {
     self.numberOfViews = [self.delegate scrollableViewCount:self];
     _itemWidth = [self.delegate scrollableViewItemWidth:self];
-    _visible = ceil(self.scrollView.frame.size.width / _itemWidth);
+    _visible = self.scrollView.frame.size.width / _itemWidth;
     
     [self resizeScrollView];
     
@@ -53,7 +53,7 @@
 
 - (void) resizeScrollView {
     CGFloat width = self.numberOfViews * _itemWidth;
-    if (self.numberOfViews % _visible != 0) {
+    if (self.numberOfViews % (int)_visible != 0) {
         width += _itemWidth;
     }
     CGFloat height = self.scrollView.frame.size.height;
