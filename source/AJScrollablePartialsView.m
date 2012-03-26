@@ -53,9 +53,8 @@
 
 - (void) resizeScrollView {
     CGFloat width = self.numberOfViews * _itemWidth;
-    if (self.numberOfViews % (int)_visible != 0) {
-        width += _itemWidth;
-    }
+    CGFloat numExtraViews = (_visible-1.0f);
+    width += numExtraViews*_itemWidth;
     CGFloat height = self.scrollView.frame.size.height;
     CGSize scrollViewSize = CGSizeMake(width, height);
     
